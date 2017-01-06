@@ -12,12 +12,31 @@
 
 #include "bitpack.h"
 
+uint64_t shl(uint64_t n, unsigned amt)
+{
+        return n << amt;
+}
+
+uint64_t shr(uint64_t n, unsigned amt)
+{
+        uint64_t result = n >> amt;
+        uint64_t sign_bits;
+
+        /* If the sign bit is on, put in sign bits */
+        if (n & 0x8000000000000) {
+                sign_bits = ~((1 << (WORD_SIZE - val)) - 1);
+                result = result | sign_bits;
+        }
+
+        return result;
+}
+
 bool bitpack_fitsu(uint64_t n, unsigned width)
 {
         assert(width <= WORD_SIZE);
         assert(width > 0);
 
-        return (n >> width) == 0;
+        return shr(n, width) == 0;
 }
 
 /* BROKEN : FIX!!! */
