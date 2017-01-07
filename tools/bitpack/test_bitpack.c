@@ -28,12 +28,6 @@ void test_bitpack_fitss(int64_t n, unsigned width)
                 printf("%" PRId64 " does not fit in %u bits\n", n, width);
         }
 }
-/*
-void test_bitpack_getu(uint64_t vec, unsigned lsb, unsigned width)
-{
-        
-}
-*/
 
 int main(void)
 {
@@ -46,6 +40,6 @@ int main(void)
         test_bitpack_fitss(-2, 1);
         test_bitpack_fitss(-4, 3);
         test_bitpack_fitss(-4, 2);
-        test_bitpack_fitss(10, 65);
+        test_bitpack_fitss(10, 64);
         return 0;
 }

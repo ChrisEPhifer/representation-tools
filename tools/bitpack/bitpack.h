@@ -8,12 +8,6 @@
  *
  * The API provides methods for packing both signed and unsigned data. Packing
  * and unpacking is safe, in that the behavior for edge cases is well-defined.
- *
- * IMPORTANT NOTE: We assume that you are working on a reasonable machine and
- * with a reasonable compiler that implements right bit shifts as arithmetic
- * rather than logical (i.e. the most significant bit is that which is copied
- * into the newly opened positions, rather than zero). Failure to do so will
- * result in unexpected behavior!
  */
 
 #include <stdbool.h>
@@ -83,11 +77,3 @@ uint64_t bitpack_setu(uint64_t vec, unsigned lsb, unsigned width, uint64_t val);
  *   Contract: Same as the above function.
  */
 uint64_t bitpack_sets(uint64_t vec, unsigned lsb, unsigned width, int64_t val);
-
-
-
-
-
-
-
-

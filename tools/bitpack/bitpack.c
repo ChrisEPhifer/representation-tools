@@ -32,7 +32,7 @@ uint64_t shr_arith(uint64_t n, unsigned amt)
 
         /* If the sign bit is on, put in sign bits */
         if (n & 0x8000000000000) {
-                sign_bits = ~((1 << (WORD_SIZE - amt)) - 1);
+                sign_bits = ~(shl(1, WORD_SIZE - amt) - 1);
                 result = result | sign_bits;
         }
 
@@ -61,8 +61,9 @@ bool bitpack_fitss(int64_t n, unsigned width)
         assert(width <= WORD_SIZE);
         assert(width > 0);
 
+        /* Shift one less than the width to account for sign bit */
         if (n < 0) {
-                return (int64_t) shr_arith(n, width - 1) == -1;
+                return ((int64_t) shr_arith(n, width - 1)) == -1;
         } else {
                 return shr_logic(n, width - 1) == 0;
         }
@@ -74,7 +75,8 @@ uint64_t bitpack_getu(uint64_t vec, unsigned lsb, unsigned width)
         assert(width <= WORD_SIZE);
         assert(width + lsb <= WORD_SIZE);
 
-        return vec << (WORD_SIZE - (lsb + width)) >> (WORD_SIZE - width);
+        return shr_logic(shl(vec, WORD_SIZE - (lsb + width)),
+                         WORD_SIZE - width);
 }
 
 int64_t bitpack_gets(uint64_t vec, unsigned lsb, unsigned width)
@@ -83,9 +85,8 @@ int64_t bitpack_gets(uint64_t vec, unsigned lsb, unsigned width)
         assert(width <= WORD_SIZE);
         assert(width + lsb <= WORD_SIZE);
 
-        /* Depends on arithmetic shift! */
-        return ((int64_t) vec << (WORD_SIZE - (lsb + width)))
-                              >> (WORD_SIZE - width);
+        return shr_arith(shl(vec, WORD_SIZE - (lsb + width)),
+                         WORD_SIZE - width);
 }
 
 uint64_t bitpack_setu(uint64_t vec, unsigned lsb, unsigned width, uint64_t val)
