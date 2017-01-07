@@ -46,6 +46,6 @@ int main(void)
         test_bitpack_fitss(-2, 1);
         test_bitpack_fitss(-4, 3);
         test_bitpack_fitss(-4, 2);
-        test_bitpack_fitss(10, 6);
+        test_bitpack_fitss(10, 65);
         return 0;
 }

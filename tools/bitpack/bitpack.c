@@ -14,21 +14,38 @@
 
 uint64_t shl(uint64_t n, unsigned amt)
 {
+        if (amt == WORD_SIZE) {
+                return 0;
+        }
+        
         return n << amt;
 }
 
-uint64_t shr(uint64_t n, unsigned amt)
+uint64_t shr_arith(uint64_t n, unsigned amt)
 {
         uint64_t result = n >> amt;
         uint64_t sign_bits;
 
+        if (amt == WORD_SIZE) {
+                return 0;
+        }
+
         /* If the sign bit is on, put in sign bits */
         if (n & 0x8000000000000) {
-                sign_bits = ~((1 << (WORD_SIZE - val)) - 1);
+                sign_bits = ~((1 << (WORD_SIZE - amt)) - 1);
                 result = result | sign_bits;
         }
 
         return result;
+}
+
+uint64_t shr_logic(uint64_t n, unsigned amt)
+{
+        if (amt == WORD_SIZE) {
+                return 0;
+        }
+        
+        return n >> amt;       
 }
 
 bool bitpack_fitsu(uint64_t n, unsigned width)
@@ -36,16 +53,19 @@ bool bitpack_fitsu(uint64_t n, unsigned width)
         assert(width <= WORD_SIZE);
         assert(width > 0);
 
-        return shr(n, width) == 0;
+        return shr_logic(n, width) == 0;
 }
 
-/* BROKEN : FIX!!! */
 bool bitpack_fitss(int64_t n, unsigned width)
 {
         assert(width <= WORD_SIZE);
         assert(width > 0);
 
-        return (n >> (width - 1)) == -1; /* Depends on arithmetic shift! */
+        if (n < 0) {
+                return (int64_t) shr_arith(n, width - 1) == -1;
+        } else {
+                return shr_logic(n, width - 1) == 0;
+        }
 }
 
 uint64_t bitpack_getu(uint64_t vec, unsigned lsb, unsigned width)
