@@ -24,7 +24,10 @@ shifting functions to perform the three most commonly needed shifts:
          - Logical Right Shift
          - Arithmetic Right Shift
 These are not included as functions available through the header, but can easily
-be copied where needed. For additional details about implementation and use, see
+be copied where needed. One important detail of note is the defined behavior for
+shifts equal to the word size (64 bits): These, in the defined functions
+described above, will return 0 (rather than performing modular arithmetic before
+executing the shift). For additional details about implementation and use, see
 the header file. A small test script is included.
 
 ### Support
