@@ -49,6 +49,26 @@ void test_bitpack_gets(uint64_t vec, unsigned lsb, unsigned width, int64_t val)
         }
 }
 
+void test_bitpack_setu(uint64_t vec, unsigned lsb, unsigned width, uint64_t val,
+                       uint64_t expected)
+{
+        if (bitpack_setu(vec, lsb, width, val) == expected) {
+                printf("Successfully packed bits.\n");
+        } else {
+                printf("Error packing bits.\n");
+        }
+}
+
+void test_bitpack_sets(uint64_t vec, unsigned lsb, unsigned width, int64_t val,
+                       uint64_t expected)
+{
+        if (bitpack_sets(vec, lsb, width, val) == expected) {
+                printf("Successfully packed bits.\n");
+        } else {
+                printf("Error packing bits.\n");
+        }
+}
+
 int main(void)
 {
         test_bitpack_fitsu(0, 1);
@@ -62,6 +82,8 @@ int main(void)
         test_bitpack_fitss(-4, 2);
         test_bitpack_fitss(10, 64);
         test_bitpack_getu(0xE00ull, 9, 3, 7);
-        test_bitpack_gets(0xE00ull, 9, 3, -1);        
+        test_bitpack_gets(0xE00ull, 9, 3, -1);
+        test_bitpack_setu(0ull, 9, 3, 7, 0xE00ull);
+        test_bitpack_sets(0ull, 9, 3, -1, 0xE00ull);
         return 0;
 }

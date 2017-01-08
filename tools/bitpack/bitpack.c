@@ -106,7 +106,7 @@ uint64_t bitpack_sets(uint64_t vec, unsigned lsb, unsigned width, int64_t val)
         assert(lsb < WORD_SIZE);
         assert(width <= WORD_SIZE);
         assert(lsb + width <= WORD_SIZE);
-        assert(bitpack_fitsu(val, width));
+        assert(bitpack_fitss(val, width));
 
         uint64_t mask = ~0ull >> (WORD_SIZE - width) << lsb;
 
