@@ -3,6 +3,8 @@
  * Chris Phifer
  *
  * This is a simple testing script for the bitpack library.
+ *
+ * Note that these tests use the default word size settings, i.e. 64 bits.
  */
 
 #include <stdio.h>
@@ -29,6 +31,24 @@ void test_bitpack_fitss(int64_t n, unsigned width)
         }
 }
 
+void test_bitpack_getu(uint64_t vec, unsigned lsb, unsigned width, uint64_t val)
+{
+        if (bitpack_getu(vec, lsb, width) == val) {
+                printf("Got correct value, %" PRIu64 " from vector.\n", val);
+        } else {
+                printf("Got incorrect value from vector.\n");
+        }
+}
+
+void test_bitpack_gets(uint64_t vec, unsigned lsb, unsigned width, int64_t val)
+{
+        if (bitpack_gets(vec, lsb, width) == val) {
+                printf("Got correct value, %" PRId64 " from vector.\n", val);
+        } else {
+                printf("Got incorrect value from vector (%" PRId64 ").\n", bitpack_gets(vec, lsb, width));
+        }
+}
+
 int main(void)
 {
         test_bitpack_fitsu(0, 1);
@@ -41,5 +61,7 @@ int main(void)
         test_bitpack_fitss(-4, 3);
         test_bitpack_fitss(-4, 2);
         test_bitpack_fitss(10, 64);
+        test_bitpack_getu(0xE00ull, 9, 3, 7);
+        test_bitpack_gets(0xE00ull, 9, 3, -1);        
         return 0;
 }

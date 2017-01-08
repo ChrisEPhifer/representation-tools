@@ -1,6 +1,6 @@
 CC = gcc
 # Add any additional linker variables up here and edit things appropriately
-CFLAGS = -g -std=gnu99 -Wall -Wextra -Werror -pedantic -O2
+CFLAGS = -g -std=gnu99 -Wall -Wextra -pedantic -Werror -O2
 
 # Add the names of your executable files here:
 EXECS = test
