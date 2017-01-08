@@ -13,7 +13,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/* 
+ * Edit these three lines if you wish to pack with smaller data types!
+ * Make sure to use stdint fixed-width types, however, or else you risk making
+ * the code machine dependent.
+ */
 #define WORD_SIZE 64
+
+typedef uint64_t uword;
+typedef int64_t  sword;
 
 /*
  *    Purpose: Check if a value n fits into the specified number of bits.
@@ -23,7 +31,7 @@
  *             maximum word size (64). It is also checked that width be
  *             positive.
  */
-bool bitpack_fitsu(uint64_t n, unsigned width);
+bool bitpack_fitsu(uword n, unsigned width);
 
 /*
  *    Purpose: Check if a value n fits into the specified number of bits.
@@ -32,7 +40,7 @@ bool bitpack_fitsu(uint64_t n, unsigned width);
  *   Contract: It is a checked runtime error to pass a width greater than the
  *             maximum word size (64).
  */
-bool bitpack_fitss(int64_t n, unsigned width);
+bool bitpack_fitss(sword n, unsigned width);
 
 /*
  *    Purpose: Unpack a value of given width and offset from a bit vector.
@@ -45,7 +53,7 @@ bool bitpack_fitss(int64_t n, unsigned width);
  *             width, and it is checked to pass an invalid combination of the
  *             two.
  */
-uint64_t bitpack_getu(uint64_t vec, unsigned lsb, unsigned width);
+uword bitpack_getu(uword vec, unsigned lsb, unsigned width);
 
 /*
  *    Purpose: Unpack a value of given width and offset from a bit vector.
@@ -54,7 +62,7 @@ uint64_t bitpack_getu(uint64_t vec, unsigned lsb, unsigned width);
  *    Returns: The data contained at the location specified by the parameters.
  *   Contract: Same as the above function.
  */
-int64_t bitpack_gets(uint64_t vec, unsigned lsb, unsigned width);
+sword bitpack_gets(uword vec, unsigned lsb, unsigned width);
 
 /*
  *    Purpose: Pack an unsigned value into the bit vector, and return the new
@@ -66,7 +74,7 @@ int64_t bitpack_gets(uint64_t vec, unsigned lsb, unsigned width);
  *             significant bit value, an invalid width, combination of the two,
  *             or to try and pack in a width the value does not fit into.
  */
-uint64_t bitpack_setu(uint64_t vec, unsigned lsb, unsigned width, uint64_t val);
+uword bitpack_setu(uword vec, unsigned lsb, unsigned width, uword val);
 
 /*
  *    Purpose: Pack an unsigned value into the bit vector, and return the new
@@ -76,4 +84,4 @@ uint64_t bitpack_setu(uint64_t vec, unsigned lsb, unsigned width, uint64_t val);
  *    Returns: The resultant bit vector after packing the data.
  *   Contract: Same as the above function.
  */
-uint64_t bitpack_sets(uint64_t vec, unsigned lsb, unsigned width, int64_t val);
+uword bitpack_sets(uword vec, unsigned lsb, unsigned width, sword val);

@@ -12,7 +12,7 @@
 
 #include "bitpack.h"
 
-uint64_t shl(uint64_t n, unsigned amt)
+uword shl(uword n, unsigned amt)
 {
         if (amt == WORD_SIZE) {
                 return 0;
@@ -21,10 +21,10 @@ uint64_t shl(uint64_t n, unsigned amt)
         return n << amt;
 }
 
-uint64_t shr_arith(uint64_t n, unsigned amt)
+uword shr_arith(uword n, unsigned amt)
 {
-        uint64_t result = n >> amt;
-        uint64_t sign_bits;
+        uword result = n >> amt;
+        uword sign_bits;
 
         if (amt == WORD_SIZE) {
                 return 0;
@@ -39,7 +39,7 @@ uint64_t shr_arith(uint64_t n, unsigned amt)
         return result;
 }
 
-uint64_t shr_logic(uint64_t n, unsigned amt)
+uword shr_logic(uword n, unsigned amt)
 {
         if (amt == WORD_SIZE) {
                 return 0;
@@ -48,7 +48,7 @@ uint64_t shr_logic(uint64_t n, unsigned amt)
         return n >> amt;       
 }
 
-bool bitpack_fitsu(uint64_t n, unsigned width)
+bool bitpack_fitsu(uword n, unsigned width)
 {
         assert(width <= WORD_SIZE);
         assert(width > 0);
@@ -56,20 +56,20 @@ bool bitpack_fitsu(uint64_t n, unsigned width)
         return shr_logic(n, width) == 0;
 }
 
-bool bitpack_fitss(int64_t n, unsigned width)
+bool bitpack_fitss(sword n, unsigned width)
 {
         assert(width <= WORD_SIZE);
         assert(width > 0);
 
         /* Shift one less than the width to account for sign bit */
         if (n < 0) {
-                return ((int64_t) shr_arith(n, width - 1)) == -1;
+                return ((sword) shr_arith(n, width - 1)) == -1;
         } else {
                 return shr_logic(n, width - 1) == 0;
         }
 }
 
-uint64_t bitpack_getu(uint64_t vec, unsigned lsb, unsigned width)
+uword bitpack_getu(uword vec, unsigned lsb, unsigned width)
 {
         assert(lsb < WORD_SIZE);
         assert(width <= WORD_SIZE);
@@ -79,7 +79,7 @@ uint64_t bitpack_getu(uint64_t vec, unsigned lsb, unsigned width)
                          WORD_SIZE - width);
 }
 
-int64_t bitpack_gets(uint64_t vec, unsigned lsb, unsigned width)
+sword bitpack_gets(uword vec, unsigned lsb, unsigned width)
 {
         assert(lsb < WORD_SIZE);
         assert(width <= WORD_SIZE);
@@ -89,26 +89,26 @@ int64_t bitpack_gets(uint64_t vec, unsigned lsb, unsigned width)
                          WORD_SIZE - width);
 }
 
-uint64_t bitpack_setu(uint64_t vec, unsigned lsb, unsigned width, uint64_t val)
+uword bitpack_setu(uword vec, unsigned lsb, unsigned width, uword val)
 {
         assert(lsb < WORD_SIZE);
         assert(width <= WORD_SIZE);
         assert(lsb + width <= WORD_SIZE);
         assert(bitpack_fitsu(val, width));
 
-        uint64_t mask = ~0ull >> (WORD_SIZE - width) << lsb;
+        uword mask = ~0ull >> (WORD_SIZE - width) << lsb;
 
         return (vec & ~mask) | (val << lsb);
 }
 
-uint64_t bitpack_sets(uint64_t vec, unsigned lsb, unsigned width, int64_t val)
+uword bitpack_sets(uword vec, unsigned lsb, unsigned width, sword val)
 {
         assert(lsb < WORD_SIZE);
         assert(width <= WORD_SIZE);
         assert(lsb + width <= WORD_SIZE);
         assert(bitpack_fitsu(val, width));
 
-        uint64_t mask = ~0ull >> (WORD_SIZE - width) << lsb;
+        uword mask = ~0ull >> (WORD_SIZE - width) << lsb;
 
         /* 'And'-ing with the mask gets rid of excess leading 1s */
         return (vec & ~mask) | (mask & (val << lsb));
