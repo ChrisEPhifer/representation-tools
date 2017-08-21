@@ -1,7 +1,7 @@
 /*
  * bitpack.h
  * Chris Phifer
- * 
+ *
  * This library is a bitpacking API useful for applications that make use of
  * flags, binary packed data (networking, emulation, etc), and for the study of
  * bitwise operations and compressed data.

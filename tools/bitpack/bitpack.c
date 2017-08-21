@@ -17,7 +17,7 @@ uint64_t shl(uint64_t n, unsigned amt)
         if (amt == WORD_SIZE) {
                 return 0;
         }
-        
+
         return n << amt;
 }
 
@@ -44,8 +44,8 @@ uint64_t shr_logic(uint64_t n, unsigned amt)
         if (amt == WORD_SIZE) {
                 return 0;
         }
-        
-        return n >> amt;       
+
+        return n >> amt;
 }
 
 bool bitpack_fitsu(uint64_t n, unsigned width)
