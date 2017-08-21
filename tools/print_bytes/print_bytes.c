@@ -1,7 +1,7 @@
-/* 
+/*
  * print_bytes.c
  * Chris Phifer
- * 
+ *
  * This is the implementation of the print_bytes library. For detailed usage
  * info, see print_bytes.h
  */
